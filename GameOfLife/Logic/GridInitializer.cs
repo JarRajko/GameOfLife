@@ -1,4 +1,5 @@
-﻿using GameOfLife.Engine;
+﻿using GameOfLife.Core;
+using GameOfLife.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameOfLife.Logic
 {
-    internal class GridInitializer
+    public class GridInitializer
     {
         private Grid grid;
         public GridInitializer(Grid grid) 
@@ -15,23 +16,15 @@ namespace GameOfLife.Logic
             this.grid = grid;
         }
 
-        public void InitializeGridRandomly(double aliveProbability)
+        public static void InitializeGridRandomly(Grid grid, double aliveProbability)
         {
             Random rand = new Random();
-            int width = grid.Width;
-            int height = grid.Height;
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < grid.Width; x++)
             {
-                for (int y = 0; y < height; y++)
+                for (int y = 0; y < grid.Height; y++)
                 {
-                    if (rand.NextDouble() < aliveProbability)
-                    {
-                        grid.SetCellState(x, y, Core.CellState.Alive);
-                    }
-                    else
-                    {
-                        grid.SetCellState(x, y, Core.CellState.Dead);
-                    }
+                    var state = rand.NextDouble() < aliveProbability ? CellState.Alive : CellState.Dead;
+                    grid.SetCellState(x, y, state);
                 }
             }
         }

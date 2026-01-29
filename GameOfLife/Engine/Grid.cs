@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameOfLife.Engine
 {
-    internal class Grid
+    public class Grid
     {
         public int Width { get; }
         public int Height { get; }
