@@ -30,6 +30,7 @@
         {
             pictureBox1 = new PictureBox();
             trackBarZoom = new TrackBar();
+            btnStartStop = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarZoom).BeginInit();
             SuspendLayout();
@@ -41,10 +42,11 @@
             pictureBox1.Size = new Size(100, 50);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
+            pictureBox1.MouseDown += pictureBox1_MouseDown;
             // 
             // trackBarZoom
             // 
-            trackBarZoom.Location = new Point(618, 31);
+            trackBarZoom.Location = new Point(866, 17);
             trackBarZoom.Minimum = 3;
             trackBarZoom.Name = "trackBarZoom";
             trackBarZoom.Size = new Size(104, 45);
@@ -52,11 +54,22 @@
             trackBarZoom.Value = 3;
             trackBarZoom.Scroll += trackBarZoom_Scroll_1;
             // 
+            // btnStartStop
+            // 
+            btnStartStop.Location = new Point(895, 63);
+            btnStartStop.Name = "btnStartStop";
+            btnStartStop.Size = new Size(75, 23);
+            btnStartStop.TabIndex = 2;
+            btnStartStop.Text = "Start/Stop";
+            btnStartStop.UseVisualStyleBackColor = true;
+            btnStartStop.Click += btnStartStop_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(982, 604);
+            Controls.Add(btnStartStop);
             Controls.Add(trackBarZoom);
             Controls.Add(pictureBox1);
             Name = "MainForm";
@@ -71,5 +84,6 @@
 
         private PictureBox pictureBox1;
         private TrackBar trackBarZoom;
+        private Button btnStartStop;
     }
 }

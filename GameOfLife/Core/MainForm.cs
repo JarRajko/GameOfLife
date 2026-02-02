@@ -62,5 +62,37 @@ namespace GameOfLife.Core
             _settings.CellSize = trackBarZoom.Value;
             pictureBox1.Invalidate();
         }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            int x = e.X / _settings.CellSize;
+            int y = e.Y / _settings.CellSize;
+
+            if (x >= 0 && x < _engine.CurrentGrid.Width && y >= 0 && y < _engine.CurrentGrid.Height)
+            {
+                var currentState = _engine.CurrentGrid.GetCellState(x, y);
+                var newState = (currentState == CellState.Alive) ? CellState.Dead : CellState.Alive;
+
+                _engine.CurrentGrid.SetCellState(x, y, newState);
+
+                pictureBox1.Invalidate();
+            }
+        }
+
+        private void btnStartStop_Click(object sender, EventArgs e)
+        {
+            if (_timer.Enabled)
+            {
+                _timer.Stop();
+                btnStartStop.Text = "Start";
+                btnStartStop.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                _timer.Start();
+                btnStartStop.Text = "Stop";
+                btnStartStop.BackColor = Color.LightCoral;
+            }
+        }
     }
 }
