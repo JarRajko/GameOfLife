@@ -39,7 +39,7 @@ namespace GameOfLife.Core
             var grid = new Grid(100, 80);
             GridInitializer.InitializeGridRandomly(grid, 0.2);
 
-            _engine = new SimulationEngine(grid, new ConwayEvolutionRule());
+            _engine = new SimulationEngine(grid, new MultiColorRule());
             _renderer = new WinFormsRenderer(_settings);
 
             _timer = new System.Windows.Forms.Timer();
@@ -68,15 +68,16 @@ namespace GameOfLife.Core
             int x = e.X / _settings.CellSize;
             int y = e.Y / _settings.CellSize;
 
-            if (x >= 0 && x < _engine.CurrentGrid.Width && y >= 0 && y < _engine.CurrentGrid.Height)
+            if (e.Button == MouseButtons.Left)
             {
-                var currentState = _engine.CurrentGrid.GetCellState(x, y);
-                var newState = (currentState == CellState.Alive) ? CellState.Dead : CellState.Alive;
-
-                _engine.CurrentGrid.SetCellState(x, y, newState);
-
-                pictureBox1.Invalidate();
+                _engine.CurrentGrid.SetCell(x, y, new Cell(true, Color.DodgerBlue));
             }
+            else if (e.Button == MouseButtons.Right)
+            {
+                _engine.CurrentGrid.SetCell(x, y, new Cell(true, Color.Crimson));
+            }
+
+            pictureBox1.Invalidate();
         }
 
         private void btnStartStop_Click(object sender, EventArgs e)

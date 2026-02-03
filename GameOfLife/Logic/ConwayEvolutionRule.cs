@@ -7,23 +7,21 @@ using System.Threading.Tasks;
 
 namespace GameOfLife.Logic
 {
-    internal class ConwayEvolutionRule : IEvolutionRule
+    public class ConwayEvolutionRule : IEvolutionRule
     {
-        public CellState GetNextState(CellState currentState, int liveNeighbors)
+        public Cell GetNextState(Cell currentCell, List<Cell> neighbors)
         {
-            if (currentState == CellState.Alive)
+            int aliveCount = neighbors.Count(n => n.IsAlive);
+
+            if (currentCell.IsAlive)
             {
-                if (liveNeighbors < 2 || liveNeighbors > 3) return CellState.Dead; // Underpopulation or Overpopulation
-                
-                else return CellState.Alive; // Survival
-                
+                bool staysAlive = (aliveCount == 2 || aliveCount == 3);
+                return new Cell(staysAlive, currentCell.Color);
             }
-            else // currentState == CellState.Dead
+            else
             {
-                if (liveNeighbors == 3) return CellState.Alive; // Reproduction
-                
-                else return CellState.Dead; // Remains dead
-                
+                bool becomesAlive = (aliveCount == 3);
+                return new Cell(becomesAlive, becomesAlive ? Color.LimeGreen : Color.Black);
             }
         }
     }

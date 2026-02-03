@@ -1,31 +1,39 @@
-﻿using GameOfLife.Core;
+﻿using System.Drawing;
 using GameOfLife.Engine;
-using GameOfLife.Rendering;
+using GameOfLife.Core;
 
-public class WinFormsRenderer
+namespace GameOfLife.Rendering
 {
-    private readonly RenderSettings _settings;
-
-    public WinFormsRenderer(RenderSettings settings)
+    public class WinFormsRenderer
     {
-        _settings = settings;
-    }
+        private readonly RenderSettings _settings;
 
-    public void Render(Graphics g, Grid grid)
-    {
-        g.Clear(Color.FromArgb(30, 30, 30));
-
-        for (int y = 0; y < grid.Height; y++)
+        public WinFormsRenderer(RenderSettings settings)
         {
-            for (int x = 0; x < grid.Width; x++)
+            _settings = settings;
+        }
+
+        public void Render(Graphics g, Grid grid)
+        {
+            g.Clear(Color.FromArgb(30, 30, 30));
+
+            for (int y = 0; y < grid.Height; y++)
             {
-                if (grid.GetCellState(x, y) == CellState.Alive)
+                for (int x = 0; x < grid.Width; x++)
                 {
-                    g.FillRectangle(Brushes.LimeGreen,
-                        x * _settings.CellSize,
-                        y * _settings.CellSize,
-                        _settings.CellSize - 1,
-                        _settings.CellSize - 1);
+                    Cell cell = grid.GetCell(x, y);
+
+                    if (cell.IsAlive)
+                    {
+                        using (Brush cellBrush = new SolidBrush(cell.Color))
+                        {
+                            g.FillRectangle(cellBrush,
+                                x * _settings.CellSize,
+                                y * _settings.CellSize,
+                                _settings.CellSize - 1,
+                                _settings.CellSize - 1);
+                        }
+                    }
                 }
             }
         }

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace GameOfLife.Logic
 {
-    internal interface IEvolutionRule
+    public interface IEvolutionRule
     {
-
-        CellState GetNextState(CellState currentState, int liveNeighbors);
-
+        Cell GetNextState(Cell currentCell, List<Cell> neighbors);
     }
 }

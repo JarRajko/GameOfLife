@@ -1,57 +1,78 @@
 ﻿using GameOfLife.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace GameOfLife.Engine
 {
     public class Grid
     {
+        private Cell[,] _cells;
         public int Width { get; }
         public int Height { get; }
-        private CellState[,] Cells;
 
-        public Grid(int width, int height) 
+        public Grid(int width, int height)
         {
-            this.Width = width;
-            this.Height = height;
+            Width = width;
+            Height = height;
+            _cells = new Cell[width, height];
 
-            Cells = new CellState[width, height];
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    _cells[x, y] = new Cell(false, Color.Black);
+                }
+            }
         }
 
-        public CellState GetCellState(int x, int y)
+        public Cell GetCell(int x, int y)
         {
-            return Cells[x, y];
+            if (x >= 0 && x < Width && y >= 0 && y < Height)
+                return _cells[x, y];
+
+            return new Cell(false, Color.Black);
         }
 
-        public void SetCellState(int x, int y, CellState state)
+        public void SetCell(int x, int y, Cell cell)
         {
-            Cells[x, y] = state;
+            if (x >= 0 && x < Width && y >= 0 && y < Height)
+            {
+                _cells[x, y] = cell;
+            }
         }
 
-        public int CountLivingNeighbours(int x, int y)
+        public List<Cell> GetNeighbors(int x, int y)
         {
-            int liveCount = 0;
+            List<Cell> neighbors = new List<Cell>();
+
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dy = -1; dy <= 1; dy++)
                 {
-                    if (dx == 0 && dy == 0) continue; // Skip the cell itself
-                    int neighborX = x + dx;
-                    int neighborY = y + dy;
-                    // Check bounds
-                    if (neighborX >= 0 && neighborX < Width && neighborY >= 0 && neighborY < Height)
+                    if (dx == 0 && dy == 0) continue;
+
+                    int nx = x + dx;
+                    int ny = y + dy;
+
+                    if (nx >= 0 && nx < Width && ny >= 0 && ny < Height)
                     {
-                        if (Cells[neighborX, neighborY] == CellState.Alive)
-                        {
-                            liveCount++;
-                        }
+                        neighbors.Add(_cells[nx, ny]);
                     }
                 }
             }
-            return liveCount;
+
+            return neighbors;
+        }
+
+        public void Clear()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    _cells[x, y] = new Cell(false, Color.Black);
+                }
+            }
         }
     }
 }
